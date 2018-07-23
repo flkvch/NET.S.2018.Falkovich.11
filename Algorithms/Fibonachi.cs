@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 
 namespace Algorithms
 {
@@ -17,36 +15,27 @@ namespace Algorithms
         /// <param name="sequenceLength">Length of the sequence.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Sequence Length should be bigger than 0!</exception>
-        public static int[] GenerateFibonachi(int sequenceLength)
+        public static IEnumerable<BigInteger> GenerateFibonachi(int sequenceLength)
         {
             if (sequenceLength < 1)
             {
                 throw new ArgumentException("Sequence Length should be bigger than 0!");
             }
 
-            int[] array = new int[sequenceLength];
-            FibonachiRecursive(sequenceLength, ref array);
-            return array;
+            return FibonachiCore(sequenceLength);
         }
 
-        private static int FibonachiRecursive(int sequenceLength, ref int[] array)
+        private static IEnumerable<BigInteger> FibonachiCore(int sequenceLength)
         {
-            if (sequenceLength == 1)
-            {
-                array[0] = 0;
-                return 0;
-            }
+            BigInteger bprev = 0;
+            BigInteger prev = 1;
 
-            if (sequenceLength == 2)
+            for (int i = 0; i < sequenceLength; ++i)
             {
-                array[0] = 0;
-                array[1] = 1;
-                return 1;
-            }
-            else
-            {
-                return array[sequenceLength - 1] = FibonachiRecursive(sequenceLength - 1, ref array)
-                    + FibonachiRecursive(sequenceLength - 2, ref array);
+                yield return bprev;
+                var temp = prev;
+                prev += bprev;
+                bprev = temp;
             }
         }
     }
